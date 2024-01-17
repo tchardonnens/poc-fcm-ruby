@@ -56,3 +56,4 @@ build-iPhoneSimulator/
 # .rubocop-https?--*
 
 qonto-staging-3dbe20386224.json
+.DS_Store
