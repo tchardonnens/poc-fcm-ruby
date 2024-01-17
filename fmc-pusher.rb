@@ -2,7 +2,7 @@ require 'httparty'
 require 'json'
 require 'googleauth'
 
-auth_file = './notif-pusher-poc-firebase-adminsdk-qscd8-4becadb760.json'
+auth_file = './qonto-staging-3dbe20386224.json'
 scope = 'https://www.googleapis.com/auth/firebase.messaging'
 
 authorizer = Google::Auth::ServiceAccountCredentials.make_creds(
@@ -23,8 +23,8 @@ def send_push_notification(access_token, title, body)
     "message": {
         "name": "projects/1048218553805/messages/1",
         "notification": {
-            "title": "Hello Qonto!",
-            "body": "Update notification system"
+            "title": "Migrate notification system",
+            "body": "Hello Qonto"
         },
         "topic": "bipbop"
     }
