@@ -6,3 +6,4 @@ source "https://rubygems.org"
 
 gem 'httparty'
 gem 'googleauth'
+gem 'dotenv'

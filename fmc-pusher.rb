@@ -1,8 +1,12 @@
 require 'httparty'
 require 'json'
 require 'googleauth'
+require 'dotenv'
 
-auth_file = './qonto-staging-3dbe20386224.json'
+Dotenv.load
+
+auth_file = ENV['GOOGLE_APPLICATION_CREDENTIALS']
+project_id = ENV['PROJECT_ID']
 scope = 'https://www.googleapis.com/auth/firebase.messaging'
 
 authorizer = Google::Auth::ServiceAccountCredentials.make_creds(
@@ -12,23 +16,35 @@ authorizer = Google::Auth::ServiceAccountCredentials.make_creds(
 
 authorizer.fetch_access_token!
 
-def send_push_notification(access_token, title, body)
-  url = 'https://fcm.googleapis.com/v1/projects/1048218553805/messages:send'
+def send_push_notification(access_token, project_id, title, body)
+  url = "https://fcm.googleapis.com/v1/projects/#{project_id}/messages:send"
   headers = {
     'Content-Type' => 'application/json',
     'Authorization' => 'Bearer ' + access_token
   }
   body = {
-    "validate_only": false,
+    "validate_only": true,
     "message": {
-        "name": "projects/1048218553805/messages/1",
         "notification": {
             "title": "Migrate notification system",
             "body": "Hello Qonto"
         },
-        "topic": "bipbop"
+        "android": {
+			"notification": {
+				"click_action": "test",
+			},
+        },
+        "apns": {
+			"payload": {
+				"aps": {
+					"category": "test"
+				}
+			},
+        },
+        # replace by registration token instead of topic
+        # "token": "registration_token"
+        "topic": "test"
     }
-    
   }.to_json
 
   response = HTTParty.post(url, headers: headers, body: body)
@@ -36,4 +52,4 @@ def send_push_notification(access_token, title, body)
 end
 
 # Replace 'YOUR_DEVICE_TOKEN' with an actual device token
-send_push_notification(authorizer.access_token, 'Hello Qonto!', 'Update notification system')
+send_push_notification(authorizer.access_token, project_id, 'Hello Qonto!', 'Update notification system')
