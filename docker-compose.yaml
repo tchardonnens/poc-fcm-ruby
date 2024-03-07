@@ -4,6 +4,5 @@ services:
     build: .
     volumes:
       - .:/usr/src/app
-      - ./qonto-staging-be5b824043e6.json:/credentials.json
     env_file:
       - ./.env
