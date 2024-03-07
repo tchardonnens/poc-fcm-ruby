@@ -4,7 +4,6 @@ require 'googleauth'
 require 'dotenv'
 
 Dotenv.load
-
 auth_file = ENV['GOOGLE_APPLICATION_CREDENTIALS']
 project_id = ENV['PROJECT_ID']
 registration_token = ENV['REGISTRATION_KEY']
@@ -17,7 +16,7 @@ authorizer = Google::Auth::ServiceAccountCredentials.make_creds(
 
 authorizer.fetch_access_token!
 
-def send_push_notification(access_token, project_id, registration_token, title, body)
+def send_push_notification(access_token, project_id, registration_token)
   url = "https://fcm.googleapis.com/v1/projects/#{project_id}/messages:send"
   headers = {
     'Content-Type' => 'application/json',
@@ -51,4 +50,4 @@ def send_push_notification(access_token, project_id, registration_token, title, 
   puts response.body
 end
 
-send_push_notification(authorizer.access_token, project_id, registration_token ,'Hello Qonto!', 'Update notification system')
+send_push_notification(authorizer.access_token, project_id, registration_token)
